@@ -33,10 +33,11 @@ The settings for the experiments are each in an individual file located in the `
 You can change the experiment by importing a different experiment in the file `segmenter.py`.
 
 ## Creating checkpoits and prediction
-* To create a checkpoint after every epoch, set the `SAVE_CHECKPOINTS = True` in the corresponding experiment file
-* For inference, you need to load a checkpoint form a previously trained model. To achieve this, set the following three fields in the corresponding experiment file
+* To create a checkpoint after every epoch, set `SAVE_CHECKPOINTS = True` in the corresponding experiment file
+* For inference, you need to load a checkpoint form a previously trained model. To achieve this, set the following three fields in the corresponding experiment file:
 ```
 PREDICT = True
 RESTORE_ID = <Id to load>
 RESTORE_EPOCH = <Epoch to load>
 ```
+Running `train.py` now will run inference for all images in the validation dataset.
