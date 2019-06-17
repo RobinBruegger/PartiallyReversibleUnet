@@ -1,0 +1,8 @@
+opencv-python
+matplotlib
+h5py
+-e git+https://github.com/lmkoch/medpy/#egg=medpy
+revtorch
+scikit-image
+nibabel
+comet-ml

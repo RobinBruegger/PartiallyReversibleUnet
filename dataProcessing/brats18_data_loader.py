@@ -53,10 +53,14 @@ def crop_volume_allDim(image, mask=None):
         return image, mask[x0:x1, y0:y1, z0:z1]
     return image
 
-def crop_or_pad_slice_to_size(image, target_size, channels=None):
+def crop_or_pad_slice_to_size(image, target_size, channels=None, offset=None):
     '''
     Make sure that the image has the desired dimensions
     '''
+    
+    if offset is None:
+        offset = (0, 0, 0)
+    
     x_t, y_t, z_t = target_size[0:3]
     x_s, y_s, z_s = image.shape[0:3]
 
@@ -307,10 +311,8 @@ def load_and_maybe_process_data(input_folder,
 
 
 if __name__ == '__main__':
-    #input_folder = "C:/eth/masterarbeit/data/BraTS2018/original"
-    #preprocessing_folder = "C:/eth/masterarbeit/data/BraTS2018/preprocessed"
-    input_folder = "/srv/glusterfs/brrobin/BRATS18_original/training_all"
-    preprocessing_folder = "/srv/glusterfs/brrobin/BRATS/brats18_all_zero_notest"
+    input_folder = "path/to/original/training"
+    preprocessing_folder = "path/to/desired/output/location"
 
     d = load_and_maybe_process_data(input_folder, preprocessing_folder, (160, 192, 160), 4, (1.0, 1.0, 1.0), force_overwrite=True)
 

@@ -89,8 +89,11 @@ class BratsDataset(torch.utils.data.Dataset):
         if self.hasMasks: labels = np.transpose(labels, (3, 0, 1, 2))  # bring into NCWH format
 
         # to tensor
+        #image = image[:, 0:32, 0:32, 0:32]
         image = torch.from_numpy(image)
-        if self.hasMasks: labels = torch.from_numpy(labels)
+        if self.hasMasks:
+            #labels = labels[:, 0:32, 0:32, 0:32]
+            labels = torch.from_numpy(labels) 
 
         #get pid
         pid = self.file["pids_" + self.mode][index]

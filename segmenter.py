@@ -3,11 +3,11 @@ import torch.nn as nn
 import time
 import bratsUtils
 import numpy as np
-import clusterConfig
 import torch.optim as optim
 import torch.nn.functional as F
 import os
 import dataProcessing.utils as utils
+import systemsetup
 
 class Segmenter:
 
@@ -17,9 +17,9 @@ class Segmenter:
         self.valDataLoader = valDataLoader
         self.challengeValDataLoader = challengeValDataLoader
         self.experiment = expConfig.experiment
-        self.checkpointsBasePathLoad = "/scratch_net/airfox/brrobin/checkpoints/"
-        self.checkpointsBasePathSave= "/srv/glusterfs/brrobin/checkpoints/"
-        self.predictionsBasePath = "/srv/glusterfs/brrobin/predictions/"
+        self.checkpointsBasePathLoad = systemsetup.CHECKPOINT_BASE_PATH
+        self.checkpointsBasePathSave= systemsetup.CHECKPOINT_BASE_PATH
+        self.predictionsBasePath = systemsetup.PREDICTIONS_BASE_PATH
         self.startFromEpoch = 0
 
         self.bestMeanDice = 0
@@ -189,8 +189,7 @@ class Segmenter:
                     expConfig.lr_sheudler.step()
 
             #save model
-            if clusterConfig.IS_CLUSTER:
-                self.saveToDisk(epoch)
+            #self.saveToDisk(epoch)
 
             epoch = epoch + 1
 

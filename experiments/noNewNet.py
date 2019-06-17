@@ -1,20 +1,20 @@
 from comet_ml import Experiment, ExistingExperiment
 import sys
 sys.path.append("..")
-import clusterConfig
 import torch
 import torch.optim as optim
 import torch.nn as nn
 import bratsUtils
 import torch.nn.functional as F
+import random
 
-id = clusterConfig.id
+id = random.getrandbits(64)
 
 #restore experiment
 #VALIDATE_ALL = False
-PREDICT = True
-RESTORE_ID = 395
-RESTORE_EPOCH = 350
+PREDICT = False
+#RESTORE_ID = 395
+#RESTORE_EPOCH = 350
 #LOG_COMETML_EXISTING_EXPERIMENT = ""
 
 #general settings
@@ -44,7 +44,7 @@ LOG_LR_EVERY_EPOCH = True
 
 #data and augmentation
 TRAIN_ORIGINAL_CLASSES = False #train on original 5 classes
-DATASET_WORKERS = 1 #only one core per job possible on cluster :(
+DATASET_WORKERS = 1
 SOFT_AUGMENTATION = False #Soft augmetation directly works on the 3 classes. Hard augmentation augments on the 5 orignal labels, then takes the argmax
 NN_AUGMENTATION = True #Has priority over soft/hard augmentation. Uses nearest-neighbor interpolation
 DO_ROTATE = True
@@ -66,13 +66,6 @@ if LOG_COMETML:
         experiment = ExistingExperiment(api_key="", previous_experiment=LOG_COMETML_EXISTING_EXPERIMENT, project_name="", workspace="")
 else:
     experiment = None
-
-if clusterConfig.IS_CLUSTER:
-    BRATS_PATH ="/srv/glusterfs/brrobin/BRATS/brats18_all_zero_notest/data_3D_size_160_192_160_res_1.0_1.0_1.0.hdf5"
-    BRATS_PATH_VAL = "/srv/glusterfs/brrobin/BRATS/brats18_val_zero_cropped_160_192_160/data_3D.hdf5"
-else:
-    BRATS_PATH = "C:/eth/masterarbeit/data/BRATS/preprocessed_tiny/data_3D_size_160_192_160_res_1.0_1.0_1.0.hdf5"
-    BRATS_PATH_VAL = "C:/eth/masterarbeit/data/BraTS2018/val/data_3D.hdf5"
 
 #network funcitons
 if TRAIN_ORIGINAL_CLASSES:

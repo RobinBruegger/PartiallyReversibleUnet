@@ -274,10 +274,8 @@ def load_and_maybe_process_data(input_folder,
 
 
 if __name__ == '__main__':
-    #input_folder = "C:/eth/masterarbeit/data/BraTS2018/original/training"
-    #preprocessing_folder = "C:/eth/masterarbeit/data/BraTS2018/tmp"
-    input_folder = "/srv/glusterfs/brrobin/BRATS18_original/validation_all"
-    preprocessing_folder = "/srv/glusterfs/brrobin/BRATS/brats18_val_zero_cropped_160_192_160"
+    input_folder = "C:/eth/masterthesis/data/BraTS2018/original/training"
+    preprocessing_folder = "C:/eth/masterthesis/data/BraTS2018/tmp"
 
     d = load_and_maybe_process_data(input_folder, preprocessing_folder, 4, force_overwrite=True)
 
