@@ -18,6 +18,7 @@ PREDICT = False
 #LOG_COMETML_EXISTING_EXPERIMENT = ""
 
 #general settings
+SAVE_CHECKPOINTS = False #set to true to create a checkpoint at every epoch
 EXPERIMENT_TAGS = ["bugfreeFinalDrop"]
 EXPERIMENT_NAME = "Nonreversible NO_NEW30"
 EPOCHS = 1000
@@ -132,7 +133,7 @@ class NoNewNet(nn.Module):
 
         #create encoder levels
         encoderModules = []
-        encoderModules.append(EncoderModule(4, channels, False, True, True))
+        encoderModules.append(EncoderModule(4, channels, False, True))
         for i in range(self.levels - 2):
             encoderModules.append(EncoderModule(channels * pow(2, i), channels * pow(2, i+1), True, True))
         encoderModules.append(EncoderModule(channels * pow(2, self.levels - 2), channels * pow(2, self.levels - 1), True, False))

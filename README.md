@@ -15,7 +15,7 @@ If you find this code helpful in your research please cite the following paper:
 If you want to create your own reversible or partially reversible neural network you can use our [RevTorch](https://github.com/RobinBruegger/RevTorch) library.
 
 ## Virtual Environment Setup
-The code is implemented in Python 3.6 using PyTorch. Follow the steps below to install all dependencies:
+The code is implemented in Python 3.6 using PyTorch 1.1.0. Follow the steps below to install all dependencies:
 * Set up a virtual environment (e.g. conda or virtualenv) with Python 3.6
 * Install all non-PyTorch requirements using: `pip install -r dataProcessing/brats18_data_loader.py`
 * Install PyTorch following the instructions on ther [website](https://pytorch.org/).
@@ -31,3 +31,12 @@ To prepare the data, adjust the paths at the end of `dataProcessing/brats18_data
 
 The settings for the experiments are each in an individual file located in the `experiments/` folder.
 You can change the experiment by importing a different experiment in the file `segmenter.py`.
+
+## Creating checkpoits and prediction
+* To create a checkpoint after every epoch, set the `SAVE_CHECKPOINTS = True` in the corresponding experiment file
+* For inference, you need to load a checkpoint form a previously trained model. To achieve this, set the following three fields in the corresponding experiment file
+```
+PREDICT = True
+RESTORE_ID = <Id to load>
+RESTORE_EPOCH = <Epoch to load>
+```

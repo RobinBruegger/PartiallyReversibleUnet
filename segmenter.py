@@ -88,7 +88,6 @@ class Segmenter:
             for i, data in enumerate(self.challengeValDataLoader):
                 inputs, pids, xOffset, yOffset, zOffset = data
                 print("processing {}".format(pids[0]))
-                print("Offsets: [{}, {}, {}]".format(xOffset, yOffset, zOffset))
                 inputs = inputs.to(self.device)
 
                 #predict labels and bring into required shape
@@ -103,7 +102,6 @@ class Segmenter:
                 if zOffset + s[4] > 155:
                     outputs = outputs[:, :, :, :, :155 - zOffset]
                 fullsize[:, :, xOffset:xOffset+s[2], yOffset:yOffset+s[3], zOffset:zOffset+s[4]] = outputs
-                print(fullsize.shape)
 
                 #binarize output
                 wt, tc, et = fullsize.chunk(3, dim=1)
@@ -189,7 +187,8 @@ class Segmenter:
                     expConfig.lr_sheudler.step()
 
             #save model
-            #self.saveToDisk(epoch)
+            if expConfig.SAVE_CHECKPOINTS:
+                self.saveToDisk(epoch)
 
             epoch = epoch + 1
 
@@ -334,7 +333,10 @@ class Segmenter:
             saveDict["lr_sheudler_state_dict"] = self.expConfig.lr_sheudler.state_dict()
 
         #save dict
-        path = self._getCheckpointPathSave(self.expConfig.id, epoch)
+        basePath = self.checkpointsBasePathSave + "{}".format(self.expConfig.id)
+        path = basePath + "/e_{}.pt".format(epoch)
+        if not os.path.exists(basePath):
+            os.makedirs(basePath)
         torch.save(saveDict, path)
 
     def loadFromDisk(self, id, epoch):
@@ -347,7 +349,10 @@ class Segmenter:
         for state in self.expConfig.optimizer.state.values():
             for k, v in state.items():
                 if isinstance(v, torch.Tensor):
-                    state[k] = v.cuda()
+                    if torch.cuda.is_available():
+                        state[k] = v.cuda()
+                    else:
+                        state[k] = v
 
         if "lr_sheudler_state_dict" in checkpoint:
             self.expConfig.lr_sheudler.load_state_dict(checkpoint["lr_sheudler_state_dict"])
@@ -370,9 +375,6 @@ class Segmenter:
             self.bestMovingAvg = checkpoint["bestMovingAvg"]
 
         return checkpoint["epoch"]
-
-    def _getCheckpointPathSave(self, id, epoch):
-        return self.checkpointsBasePathSave + "{}/e_{}.pt".format(id, epoch)
 
     def _getCheckpointPathLoad(self, id, epoch):
         return self.checkpointsBasePathLoad + "{}/e_{}.pt".format(id, epoch)

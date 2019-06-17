@@ -19,6 +19,7 @@ PREDICT = False
 #LOG_COMETML_EXISTING_EXPERIMENT = ""
 
 #general settings
+SAVE_CHECKPOINTS = False #set to true to create a checkpoint at every epoch
 encDepth = 2
 EXPERIMENT_TAGS = ["bugfreeFinalDrop"]
 EXPERIMENT_NAME = "Reversible NO_NEW60 {}encoder, 1decoder".format(encDepth)
@@ -145,7 +146,7 @@ class NoNewReversible(nn.Module):
         self.levels = 5
 
         self.firstConv = nn.Conv3d(4, CHANNELS[0], 3, padding=1, bias=False)
-        self.dropout = nn.Dropout3d(0.2, True)
+        #self.dropout = nn.Dropout3d(0.2, True)
         self.lastConv = nn.Conv3d(CHANNELS[0], 3, 1, bias=True)
 
         #create encoder levels
@@ -162,7 +163,7 @@ class NoNewReversible(nn.Module):
 
     def forward(self, x):
         x = self.firstConv(x)
-        x = self.dropout(x)
+        #x = self.dropout(x)
 
         inputStack = []
         for i in range(self.levels):
