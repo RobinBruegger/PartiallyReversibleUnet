@@ -29,5 +29,5 @@ To prepare the data, adjust the paths at the end of `dataProcessing/brats18_data
 * Adjust the path in `systemsetup.py` to match your system.
 * Run the `train.py` script
 
-The settings for the experimetns are each in an individual file located in the `experimetns` folder.
+The settings for the experiments are each in an individual file located in the `experiments/` folder.
 You can change the experiment by importing a different experiment in the file `segmenter.py`.
